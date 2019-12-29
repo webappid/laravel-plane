@@ -12,7 +12,7 @@ namespace WebAppId\Plane\Repositories;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use WebAppId\DDD\Tools\Lazy;
-use WebAppId\Plane\Models\Planes;
+use WebAppId\Plane\Models\Plane;
 use WebAppId\Plane\Services\Params\PlaneParam;
 
 /**
@@ -23,10 +23,10 @@ class PlaneRepository
 {
     /**
      * @param PlaneParam $planeParam
-     * @param Planes $planes
-     * @return Planes|null
+     * @param Plane $planes
+     * @return Plane|null
      */
-    public function store(PlaneParam $planeParam, Planes $planes): ?Planes
+    public function store(PlaneParam $planeParam, Plane $planes): ?Plane
     {
         try {
             $planes = Lazy::copy($planeParam, $planes);
@@ -40,41 +40,21 @@ class PlaneRepository
 
     /**
      * @param string $iataCode
-     * @param Planes $planes
-     * @return Planes|null
+     * @param Plane $planes
+     * @return Plane|null
      */
-    public function getPlaneByIata(string $iataCode, Planes $planes): ?Planes
+    public function getByIataCode(string $iataCode, Plane $planes): ?Plane
     {
         return $planes->where('iata_code', $iataCode)->first();
     }
 
     /**
-     * @param string $iataCode
-     * @param PlaneParam $planeParam
-     * @param Planes $planes
-     * @return Planes|null
-     */
-    public function updatePlaneByIataCode(string $iataCode, PlaneParam $planeParam, Planes $planes): ?Planes
-    {
-        $planes = $this->getAirportByIdent($iataCode, $planes);
-        if ($planes != null) {
-            try {
-                $planes = Lazy::copy($planeParam, $planes);
-                $planes->save();
-            } catch (QueryException $queryException) {
-                report($queryException);
-            }
-        }
-        return $planes;
-    }
-
-    /**
      * @param string $q
-     * @param Planes $planes
+     * @param Plane $planes
      * @param int $paginate
      * @return object|null
      */
-    public function getPlaneLike(string $q, Planes $planes, int $paginate = 12): ?LengthAwarePaginator
+    public function getByNameLike(string $q, Plane $planes, int $paginate = 12): ?LengthAwarePaginator
     {
         return $planes
             ->where('name', 'LIKE', '%' . $q . '%')
@@ -83,10 +63,10 @@ class PlaneRepository
 
     /**
      * @param string $q
-     * @param Planes $planes
+     * @param Plane $planes
      * @return int
      */
-    public function getPlaneLikeCount(string $q, Planes $planes): int
+    public function getByNameLikeCount(string $q, Plane $planes): int
     {
         return $planes
             ->where('name', 'LIKE', '%' . $q . '%')
@@ -95,10 +75,10 @@ class PlaneRepository
 
     /**
      * @param string $icaoCode
-     * @param Planes $planes
-     * @return Planes|null
+     * @param Plane $planes
+     * @return Plane|null
      */
-    public function getPlaneByIcaoCode(string $icaoCode, Planes $planes): ?Planes
+    public function getByIcaoCode(string $icaoCode, Plane $planes): ?Plane
     {
         return $planes->where('icao_code', $icaoCode)->first();
     }

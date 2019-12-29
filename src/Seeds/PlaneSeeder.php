@@ -29,8 +29,9 @@ class PlaneSeeder extends Seeder
                 DB::beginTransaction();
                 while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
                     $data = array_combine($header, $row);
-                    $planeParam = Lazy::copy($data, $planeParam, Lazy::AUTOCAST);
-                    $this->container->call([$planeRepository, 'addAirport'], ['airportParam' => $planeParam]);
+                    $planeParam = Lazy::copyFromArray($data, $planeParam, Lazy::AUTOCAST);
+
+                    $this->container->call([$planeRepository, 'store'], ['planeParam' => $planeParam]);
                 }
                 DB::commit();
                 fclose($handle);

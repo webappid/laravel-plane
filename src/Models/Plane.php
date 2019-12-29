@@ -11,7 +11,7 @@ namespace WebAppId\Plane\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Planes extends Model
+class Plane extends Model
 {
     protected $table = 'planes';
     

@@ -25,18 +25,18 @@ class CreatePlanesTable extends Migration
             $table->string('name')
                 ->nullable(false)
                 ->comment('Full name of the aircraft');
-            $table->string('iata_code')
+            $table->string('iata_code', 5)
                 ->nullable(true)
                 ->index()
                 ->comment('Unique three-letter IATA identifier for the aircraft');
-            $table->string('icao_code')
+            $table->string('icao_code', 5)
                 ->nullable(true)
                 ->index()
                 ->comment('Unique four-letter ICAO identifier for the aircraft');
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
